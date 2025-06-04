@@ -1,0 +1,10 @@
+# toml file declares how your project should be built and managed
+[build-system]
+requires = [
+    "setuptools >= 42",
+    "versioningit",
+    "wheel",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.versioningit]

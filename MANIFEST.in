@@ -1,0 +1,2 @@
+# Include everything under the src directory for the source distribution
+graft src
