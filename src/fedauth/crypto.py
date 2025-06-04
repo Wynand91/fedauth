@@ -2,6 +2,13 @@ from cryptography.fernet import Fernet
 from django.conf import settings
 
 
+SIGN_ALGOS = [
+    ('HS256', 'HS256'),
+    ('RS256', 'RS256'),
+    ('ES256', 'ES256'),
+]
+
+
 def encrypt(plain_text: bytes, key: str | bytes = None) -> bytes:
     """
     Encrypt plain text.
