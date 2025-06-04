@@ -1,6 +1,6 @@
 from django.db import models
 
-from fedauth.crypto import decrypt, encrypt
+from fedauth.crypto import decrypt, encrypt, SIGN_ALGOS
 
 
 class TimeStampedModel(models.Model):

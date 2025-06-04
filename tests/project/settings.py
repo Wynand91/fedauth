@@ -30,9 +30,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
 
     'fedauth',
-    'fedauth.oidc_admin',
     'fedauth.generic_oidc',
-    'fedauth.federated_providers'
+    'fedauth.federated_oidc'
 ]
 
 ROOT_URLCONF = 'tests.project.urls'

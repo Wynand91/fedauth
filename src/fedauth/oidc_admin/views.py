@@ -3,7 +3,7 @@ from django.conf import settings
 from django.shortcuts import redirect
 from django.urls import reverse
 
-from fedauth.federated_providers.models import FederatedProvider
+from fedauth.federated_oidc.models import FederatedProvider
 from fedauth.oidc_admin.forms import UsernameForm
 
 

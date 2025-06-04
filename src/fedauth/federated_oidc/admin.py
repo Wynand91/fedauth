@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from fedauth.federated_providers.models import FederatedProvider
+from fedauth.federated_oidc.models import FederatedProvider
 from fedauth.forms import BaseProviderAdminForm
 
 
@@ -13,14 +13,15 @@ class FederatedProviderForm(BaseProviderAdminForm):
 
 @admin.register(FederatedProvider)
 class FederatedProviderAdmin(admin.ModelAdmin):
-    list_display = ['created', 'domain']
-    list_filter = ['created', 'domain']
+    list_display = ['created_at', 'domain']
+    list_filter = ['created_at', 'domain']
     search_fields = ['domain']
     ordering = ['domain']
     form = FederatedProviderForm
-    readonly_fields = ('created',)
+    readonly_fields = ('created_at',)
     fields = (
-        'created',
+        'created_at',
+        'updated_at',
         'domain',
         'auth_endpoint',
         'token_endpoint',

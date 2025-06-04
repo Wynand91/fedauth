@@ -2,7 +2,7 @@ from django.conf import settings
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from fedauth.federated_providers.models import FederatedProvider
+from fedauth.federated_oidc.models import FederatedProvider
 from fedauth.frontend_oidc.utils import build_oidc_auth_url
 
 

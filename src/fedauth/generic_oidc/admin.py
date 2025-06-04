@@ -13,14 +13,15 @@ class GenericProviderForm(BaseProviderAdminForm):
 
 @admin.register(GenericProvider)
 class FederatedProviderAdmin(admin.ModelAdmin):
-    list_display = ['created', 'provider']
-    list_filter = ['created', 'provider']
+    list_display = ['created_at', 'provider']
+    list_filter = ['created_at', 'provider']
     search_fields = ['provider']
     ordering = ['provider']
     form = GenericProviderForm
-    readonly_fields = ('created',)
+    readonly_fields = ('created_at',)
     fields = (
-        'created',
+        'created_at',
+        'updated_at',
         'provider',
         'auth_endpoint',
         'token_endpoint',

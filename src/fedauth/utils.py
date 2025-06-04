@@ -3,7 +3,7 @@ from django.core.exceptions import ImproperlyConfigured
 from mozilla_django_oidc.utils import import_from_settings
 
 from fedauth.constants import SETTINGS_MAP
-from fedauth.federated_providers.models import FederatedProvider
+from fedauth.federated_oidc.models import FederatedProvider
 from fedauth.generic_oidc.models import GenericProvider
 
 

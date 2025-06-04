@@ -10,7 +10,7 @@ from mozilla_django_oidc.utils import (
 )
 from mozilla_django_oidc.views import get_next_url
 
-from fedauth.federated_providers.models import FederatedProvider
+from fedauth.federated_oidc.models import FederatedProvider
 from fedauth.utils import get_non_federated_provider_settings, get_federated_provider_settings
 
 
