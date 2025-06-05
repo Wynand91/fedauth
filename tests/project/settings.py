@@ -78,30 +78,6 @@ AUTHENTICATION_BACKENDS = (
     # ...
 )
 
-
-OIDC_PROVIDERS = {
-    'jumpcloud': {
-        'OIDC_RP_CLIENT_ID': '5e7b657f-ac86-45de-9755-c9e1ee6c4d93',
-        'OIDC_RP_CLIENT_SECRET': 'HWcI.p6WmTqCv6.OHtG3Dp0~Ep',
-        'OIDC_OP_AUTHORIZATION_ENDPOINT': 'https://oauth.id.jumpcloud.com/oauth2/auth',
-        'OIDC_OP_TOKEN_ENDPOINT': 'https://oauth.id.jumpcloud.com/oauth2/token',
-        'OIDC_OP_USER_ENDPOINT': 'https://oauth.id.jumpcloud.com/userinfo',
-        'OIDC_OP_JWKS_ENDPOINT': 'https://oauth.id.jumpcloud.com/oauth2/jwks',
-        'OIDC_RP_SIGN_ALGO': 'RS256',
-        'OIDC_RP_SCOPES': 'openid email profile group'
-    },
-    'okta': {
-        'OIDC_RP_CLIENT_ID': 'c9e1ee6c-9755-9755-ac86-5e7b657f4d53',
-        'OIDC_RP_CLIENT_SECRET': 'KFcP.k4GmTqCv2.9HtB3Dp2~3q',
-        'OIDC_OP_AUTHORIZATION_ENDPOINT': 'https://oauth.id.okta.com/oauth2/auth',
-        'OIDC_OP_TOKEN_ENDPOINT': 'https://oauth.id.okta.com/oauth2/token',
-        'OIDC_OP_USER_ENDPOINT': 'https://oauth.id.okta.com/userinfo',
-        'OIDC_OP_JWKS_ENDPOINT': 'https://oauth.id.okta.com/oauth2/jwks',
-        'OIDC_RP_SIGN_ALGO': 'RS256',
-        'OIDC_RP_SCOPES': 'openid email profile group'
-    }
-}
-
 LOGIN_REDIRECT_URL = "/"
 LOGIN_REDIRECT_URL_FAILURE = "/"
 LOGOUT_REDIRECT_URL = "/"

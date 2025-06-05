@@ -18,7 +18,7 @@ class FederatedProviderAdmin(admin.ModelAdmin):
     search_fields = ['provider']
     ordering = ['provider']
     form = GenericProviderForm
-    readonly_fields = ('created_at',)
+    readonly_fields = ('created_at', 'updated_at',)
     fields = (
         'created_at',
         'updated_at',
@@ -34,6 +34,7 @@ class FederatedProviderAdmin(admin.ModelAdmin):
     add_fields = ('client_secret',)
 
     def get_fields(self, request, obj=None):
+        # only include client secret field when new object is being created
         if not obj:
             return self.fields + self.add_fields
         return super().get_fields(request, obj)

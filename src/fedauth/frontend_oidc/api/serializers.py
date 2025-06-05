@@ -1,14 +1,14 @@
-from django.conf import settings
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from fedauth.federated_oidc.models import FederatedProvider
 from fedauth.frontend_oidc.utils import build_oidc_auth_url
+from fedauth.generic_oidc.models import GenericProvider
 
 
 def get_provider_options():
-    providers = settings.OIDC_PROVIDERS
-    return [(key, key) for key in providers.keys()]
+    providers = GenericProvider.objects.all()
+    return [(prov.provider, prov.provider) for prov in providers]
 
 
 class LoginSerializer(serializers.Serializer):
@@ -16,7 +16,24 @@ class LoginSerializer(serializers.Serializer):
     Request data should only contain username OR provider. Not both.
     """
     username = serializers.EmailField(required=False)
-    provider = serializers.ChoiceField(choices=get_provider_options(), required=False)
+    provider = serializers.ChoiceField(choices=[], required=False)  # choices are dynamically loaded below
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['provider'].choices = self.get_provider_choices()
+
+    @staticmethod
+    def get_provider_choices():
+        """
+        The serializer by default caches 'ChoiceField.choices' the first time it is initialized. This
+        can be problematic, since providers can be added on admin page, and the new choices
+        won't reflect until cache expires. So we need to dynamically get choices every time the serializer is
+        initialized by calling this method in __init__
+        """
+        return [
+            (p.provider, p.provider)
+            for p in GenericProvider.objects.all()
+        ]
 
     def populate_auth_url(self, attrs):
         auth_url = None
@@ -30,8 +47,10 @@ class LoginSerializer(serializers.Serializer):
                 auth_url = build_oidc_auth_url(request, provider.first())
         else:
             # if there is no username in post data - we assume that it isn't a federated username ('Login with x')
-            provider = attrs.get('provider')
-            auth_url = build_oidc_auth_url(request, provider)
+            gen_provider = attrs.get('provider')
+            provider = GenericProvider.objects.filter(provider=gen_provider)
+            if provider.exists():
+                auth_url = build_oidc_auth_url(request, provider.first())
         attrs['auth_url'] = auth_url
 
     def validate(self, attrs):

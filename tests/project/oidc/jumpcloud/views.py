@@ -1,9 +1,9 @@
-from fedauth.generic_oidc.views import AuthenticationRequestView
+from fedauth.generic_oidc.views import GenericAuthenticationRequestView
 
 ALIAS = 'jumpcloud'
 
 
-class JumpcloudAuthenticationRequestView(AuthenticationRequestView):
+class JumpcloudAuthenticationRequestView(GenericAuthenticationRequestView):
     def __init__(self):
         self.alias = ALIAS
         super().__init__()

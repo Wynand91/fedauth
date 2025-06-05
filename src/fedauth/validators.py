@@ -1,7 +1,6 @@
 import re
 
 from django.core.exceptions import ValidationError
-from django.core.validators import URLValidator
 
 
 class PhoneNumberValidator:
@@ -24,3 +23,6 @@ class PhoneNumberValidator:
             return self.parse(value)
         except ValueError:
             raise ValidationError(self.error, code='invalid', params={'value': value})
+
+
+validate_phone = PhoneNumberValidator(error='Invalid phone number. format: +27821234567')

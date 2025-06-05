@@ -2,6 +2,7 @@ from typing import Union
 from urllib.parse import urlencode
 
 from django.conf import settings
+from django.core.exceptions import ImproperlyConfigured
 from django.urls import reverse
 from django.utils.crypto import get_random_string
 from mozilla_django_oidc.utils import (
@@ -11,6 +12,7 @@ from mozilla_django_oidc.utils import (
 from mozilla_django_oidc.views import get_next_url
 
 from fedauth.federated_oidc.models import FederatedProvider
+from fedauth.generic_oidc.models import GenericProvider
 from fedauth.utils import get_non_federated_provider_settings, get_federated_provider_settings
 
 
@@ -27,16 +29,17 @@ def build_oidc_auth_url(request, provider: Union[FederatedProvider, str]):
     request.session['next'] = get_next_url(request, 'next')
     request.session['fail'] = get_next_url(request, 'fail')
 
+    # store values in session, so that we have context during callback
     if isinstance(provider, FederatedProvider):
         request.session['domain'] = provider.domain
-        oidc_op_auth_endpoint = provider.auth_endpoint
-        oidc_rp_client_id = provider.client_id
+    elif isinstance(provider, GenericProvider):
+        request.session['provider'] = provider.provider
     else:
-        # assume it's not federated
-        request.session['provider'] = provider
-        provider_settings = settings.OIDC_PROVIDERS[provider]
-        oidc_op_auth_endpoint = provider_settings['OIDC_OP_AUTHORIZATION_ENDPOINT']
-        oidc_rp_client_id = provider_settings['OIDC_RP_CLIENT_ID']
+        raise ImproperlyConfigured('Invalid provider')
+
+    # get credentials from provider object
+    oidc_op_auth_endpoint = provider.auth_endpoint
+    oidc_rp_client_id = provider.client_id
 
     callback_url = get_settings(request, 'OIDC_AUTHENTICATION_CALLBACK_URL', 'oidc_authentication_callback')
 

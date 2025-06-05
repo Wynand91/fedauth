@@ -2,18 +2,18 @@ from mozilla_django_oidc.views import (
     OIDCAuthenticationRequestView
 )
 
-from fedauth.base import ViewBase
+from fedauth.base import FedViewBase
 
 
-class AuthenticationRequestView(ViewBase, OIDCAuthenticationRequestView):
+class FederatedAuthenticationRequestView(FedViewBase, OIDCAuthenticationRequestView):
     """
     OIDCAuthenticationRequestView with alternate 'get_settings' functionality.
     """
-    domain = ""
+    domain = ''
 
     def __init__(self, *args, **kwargs):  # NOQA
-        # We do not want to call super __init__ here, as it tries to set class variables before
-        # username kwarg is available. Attributes are instead set during `get` method handling.
+        # skip super __init__. It tries to set class variables before username kwarg is available.
+        # Attributes are instead set during `get` method.
         pass
 
     def get(self, request, **kwargs):

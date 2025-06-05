@@ -1,7 +1,7 @@
 from django.urls import path
 
-from fedauth.federated_oidc.views import AuthenticationRequestView
+from fedauth.federated_oidc.views import FederatedAuthenticationRequestView
 
 urlpatterns = [
-    path('federated/<str:username>/', AuthenticationRequestView.as_view(), name='db-provider-auth'),
+    path('federated/<str:username>/', FederatedAuthenticationRequestView.as_view(), name='fed-provider-auth'),
 ]

@@ -5,17 +5,15 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError, ImproperlyConfigured
 from mozilla_django_oidc.auth import OIDCAuthenticationBackend as DefaultOidcAuthBackend
 
-from fedauth.mixins import ProviderSettingsMixin
-from fedauth.validators import PhoneNumberValidator
+from fedauth.mixins import AuthBackendSettingsMixin
+from fedauth.validators import PhoneNumberValidator, validate_phone
 
 LOGGER = logging.getLogger(__name__)
 
 UserModel = get_user_model()
 
-validate_phone = PhoneNumberValidator()
 
-
-class OIDCAuthenticationBackend(ProviderSettingsMixin, DefaultOidcAuthBackend):
+class OIDCAuthenticationBackend(AuthBackendSettingsMixin, DefaultOidcAuthBackend):
     """
     During the OIDC callback view handling, the authenticate() method is called, which will cycle through authentication
     backends defined in the settings. It will then use this class create/update and authenticate the user.

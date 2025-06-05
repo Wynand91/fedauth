@@ -1,5 +1,3 @@
-from django.conf import settings
-from django.core.exceptions import ImproperlyConfigured
 from mozilla_django_oidc.utils import import_from_settings
 
 from fedauth.constants import SETTINGS_MAP
@@ -7,7 +5,8 @@ from fedauth.federated_oidc.models import FederatedProvider
 from fedauth.generic_oidc.models import GenericProvider
 
 
-def get_provider_config(provider, attr, args):
+def get_provider_config(provider, attr, *args):
+    # Most settings are stored on te model, but some settings are global settings defined in config
     try:
         attr = SETTINGS_MAP[attr]
     except KeyError:
@@ -21,9 +20,9 @@ def get_provider_config(provider, attr, args):
 
 def get_federated_provider_settings(attr, domain, *args):
     provider = FederatedProvider.objects.get(domain=domain)
-    return get_provider_config(provider, attr, args)
+    return get_provider_config(provider, attr, *args)
 
 
 def get_non_federated_provider_settings(attr, alias, *args):
     provider = GenericProvider.objects.get(provider=alias)
-    return get_provider_config(provider, attr, args)
+    return get_provider_config(provider, attr, *args)
