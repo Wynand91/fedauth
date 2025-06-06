@@ -4,11 +4,13 @@
 
 ## Terminology:
 
-- Federated OIDC:
-Refers to login flows where the username or email domain is associated with a specific organization that uses its own OIDC Identity Provider. The package retrieves the appropriate OIDC configuration by looking up the user's domain in the database.
+- **Federated OIDC**:
 
-- Generic OIDC:
-Refers to non-domain-specific login options typically shown as "Login with {Provider}" (e.g., "Login with JumpCloud"). These are explicitly selected by the user and not determined based on their email domain.
+    Refers to login flows where the username or email domain is associated with a specific organization that uses its own OIDC Identity Provider. The package retrieves the appropriate OIDC configuration by looking up the user's domain in the database.
+
+- **Generic OIDC**:
+
+    Refers to non-domain-specific login options typically shown as "Login with {Provider}" (e.g., "Login with JumpCloud"). These are explicitly selected by the user and not determined based on their email domain.
 
 # Overview
 
@@ -22,9 +24,13 @@ You can find all applicable `mozilla-django-oidc` configuration options [here](h
 
 
 # This package has two main OIDC flows:
+
 ## A) Django Admin OIDC (Federated or Generic OIDC)
+
 ![OIDC login flow](diagrams/admin_oidc_flow.png)
+
 ## A) Frontend API OIDC (Federated or Generic OIDC)
+
 ![OIDC login flow](diagrams/frontend_flow.png)
 
 # TODO: request/response bodies
