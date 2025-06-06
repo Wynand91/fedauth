@@ -12,7 +12,7 @@ class GenericProviderForm(BaseProviderAdminForm):
 
 
 @admin.register(GenericProvider)
-class FederatedProviderAdmin(admin.ModelAdmin):
+class GenericProviderAdmin(admin.ModelAdmin):
     list_display = ['created_at', 'provider']
     list_filter = ['created_at', 'provider']
     search_fields = ['provider']

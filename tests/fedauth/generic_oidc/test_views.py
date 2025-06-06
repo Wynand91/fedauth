@@ -1,7 +1,6 @@
 from django.core.exceptions import ImproperlyConfigured
 from django.test import TestCase
 
-from fedauth.generic_oidc.models import GenericProvider
 from fedauth.generic_oidc.views import GenericAuthenticationRequestView
 from tests.factories import GenericProviderFactory
 

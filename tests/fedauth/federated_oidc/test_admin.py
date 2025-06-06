@@ -17,19 +17,37 @@ class TestFederatedOidcAdmin(TestCase):
         self.client.force_login(self.super_user)
         self.admin = FederatedProviderAdmin(FederatedProvider, AdminSite())
         self.federated_provider = FederatedProviderFactory()
+        self.create_url = reverse('admin:federated_oidc_federatedprovider_add')
 
 
     def test_create_fp_object_failure(self):
-        self.url = reverse('admin:federated_oidc_federatedprovider_add')
-        resp = self.client.post(self.url, {})
+        resp = self.client.post(self.create_url, {})
         assert resp.status_code == 200
         assert ['This field is required.'] in resp.context_data['errors']
+
+    def test_create_fb_already_exists(self):
+        domain = self.federated_provider.domain
+        client_secret = 'topsecret'
+        resp = self.client.post(self.create_url, {
+            'domain': domain,
+            'auth_endpoint': 'https://provider.com/auth/',
+            'token_endpoint': 'https://provider.com/token/',
+            'user_endpoint': 'https://provider.com/user/',
+            'jwks_endpoint': 'https://provider.com/keys/',
+            'client_id': 'a1123a67-1423-4124-24hg-7h12k124h3hj',
+            'client_secret': client_secret,
+            'sign_algo': 'RS256',
+            'scopes': "openid profile email phone groups",
+        })
+        # domain already exists, so should het a 200 response and errors on the form
+        assert resp.status_code == 200
+        form = resp.context['adminform'].form
+        assert form.errors == {'domain': ['Federated provider with this Domain already exists.']}
 
     def test_create_fp_save(self):
         domain = 'somecompany.com'
         client_secret = 'topsecret'
-        self.url = reverse('admin:federated_oidc_federatedprovider_add')
-        resp = self.client.post(self.url, {
+        resp = self.client.post(self.create_url, {
             'domain': domain,
             'auth_endpoint': 'https://provider.com/auth/',
             'token_endpoint': 'https://provider.com/token/',

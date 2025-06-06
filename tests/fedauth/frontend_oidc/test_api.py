@@ -1,6 +1,8 @@
+import secrets
 from urllib.parse import urlencode, urlparse, parse_qs
 
 from django.contrib.sessions.backends.cache import SessionStore
+from django.core.cache import cache as default_cache  # to prevent fixture clash
 from django.test import override_settings
 from django.urls import reverse
 
@@ -129,3 +131,38 @@ class TestLoginApi(BaseApiTestCase):
 
         # double check that domain isn't in session (since not a federated login request)
         assert not session.get('domain')
+
+
+class TestTokenExchangeApi(BaseApiTestCase):
+
+    def setUp(self):
+        self.url = reverse('token-exchange')
+
+        # mock tokens saved in cache by callback API
+        self.valid_code = secrets.token_urlsafe(32)
+        self.jwt_data = {
+            'access_token': 'this.is.the.access.token',
+            'refresh_token': 'this.is.the.refresh.token'
+        }
+        default_cache.set(
+            f'auth_code:{self.valid_code}',
+            self.jwt_data
+        )
+
+    def test_exchange_invalid_code_length(self):
+        data={'code': 'expired_code' * 6}
+        resp = self.post(self.url, data=data)
+        assert resp.status_code == 400
+        assert resp.json() == {'code': ['Ensure this field has no more than 64 characters.']}
+
+    def test_exchange_invalid_code(self):
+        data={'code': 'expired_code'}
+        resp = self.post(self.url, data=data)
+        assert resp.status_code == 400
+        assert resp.json() == {'detail': ['Code Invalid or expired']}
+
+    def test_exchange_valid_code(self):
+        data={'code': self.valid_code}
+        resp = self.post(self.url, data=data)
+        assert resp.status_code == 200
+        assert resp.json() == self.jwt_data

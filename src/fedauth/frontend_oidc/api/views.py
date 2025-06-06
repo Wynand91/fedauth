@@ -1,10 +1,11 @@
 from django.core.exceptions import ValidationError as DjangoValidationError
 from django.core.validators import URLValidator
+from django.core.cache import cache
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 
-from fedauth.frontend_oidc.api.serializers import LoginSerializer
+from fedauth.frontend_oidc.api.serializers import LoginSerializer, TokenExchangeSerializer
 
 url_validator = URLValidator()
 
@@ -34,8 +35,23 @@ class OidcLoginView(CreateAPIView):
             raise ValidationError("Invalid 'next' or 'success' url")
 
 
-    def post(self, request, *args, **kwargs):
+    def create(self, request, *args, **kwargs):
         self.validate_url_parameters(request)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         return Response({'auth_url': serializer.validated_data['auth_url']})
+
+
+class TokenExchangeView(CreateAPIView):
+    """
+    After successful authentication via OIDC (frontend flow), a unique code is returned to the
+    frontend (see callback view).
+    The unique code can be exchanged for jwt tokens using this view.
+    """
+    serializer_class = TokenExchangeSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        jwt_tokens = serializer.validated_data['tokens']
+        return Response(jwt_tokens)

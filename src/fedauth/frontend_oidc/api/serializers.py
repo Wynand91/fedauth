@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
@@ -65,3 +66,16 @@ class LoginSerializer(serializers.Serializer):
         return attrs
 
 
+class TokenExchangeSerializer(serializers.Serializer):
+    code = serializers.CharField(max_length=64)
+
+    def validate(self, attrs):
+        request = self.context['request']
+        code = request.data.get('code')
+        jwt_token = cache.get(f'auth_code:{code}')
+        if not jwt_token:
+            raise ValidationError({'detail': 'Code Invalid or expired'})
+        cache.delete(f'auth_code:{code}')
+        # add tokens to attrs (jwt_token contains access and refresh tokens)
+        attrs['tokens'] = jwt_token
+        return attrs

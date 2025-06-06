@@ -1,10 +1,6 @@
-from django.contrib.auth.models import User
-from django.core.cache import cache
 from django.test import TestCase
 
 from fedauth.base import ViewBase
-from fedauth.views import AuthenticationCallbackView
-from tests.base import FakeRequest
 
 
 class SomeView(ViewBase):

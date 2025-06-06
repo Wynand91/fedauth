@@ -90,6 +90,8 @@ OIDC_SUPER_GROUP = 'superuser'
 OIDC_REDIRECT_ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 OIDC_REDIRECT_REQUIRE_HTTPS = False
 
+OIDC_SL_CODE_TIMEOUT = os.getenv('OIDC_SL_CODE_TIMEOUT', 60)
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',

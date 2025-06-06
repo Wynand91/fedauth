@@ -1,4 +1,8 @@
+import secrets
+
 from django.contrib.sessions.backends.cache import SessionStore
+from django.core.cache import cache
+from django.conf import settings
 from django.shortcuts import resolve_url
 from mozilla_django_oidc.views import (
     OIDCAuthenticationCallbackView
@@ -8,8 +12,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 class AuthenticationCallbackView(OIDCAuthenticationCallbackView):
     """
-    This is the callback view that will be called by ALL idP after a user successfully authenticates on the idP.
-    The baseclass `get` method calls call auth.authenticate(), which in turns calls The Auth backend defined in
+    This is the callback view that will be called by ALL idPs after a user successfully authenticates on the idP.
+    The baseclass `get` method calls auth.authenticate(), which in turns calls The Auth backend defined in
     settings (AUTHENTICATION_BACKENDS), which will handle user creation/update/authentication.
     """
     @property
@@ -22,15 +26,24 @@ class AuthenticationCallbackView(OIDCAuthenticationCallbackView):
 
     @property
     def success_url(self):
-        # if frontend login ('oidc_login_next' in session), generate tokens and return as url query params
-        # todo: instead of returning token, return a code that can then be exchanged for a token.
+        # if frontend login (i.e. next url in session), generate and cache user tokens, and return short-lived code
+        # that can be exchanged with token exchange API.
         next_url = self.request.session.get('next', None)
         if next_url:
+            # generate a refresh token object to get refresh and access tokens
             tokens = RefreshToken.for_user(user=self.request.user)
-            refresh_token = str(tokens)
-            access_token = str(tokens.access_token)  # NOQA
-            next_url = f'{next_url}?access={access_token}&refresh={refresh_token}'
-            self.request.session.pop('next', None)  # remove from session storage
+            jwt_data = {
+                'access_token': str(tokens.access_token),
+                'refresh_token': str(tokens)
+            }
+
+            # Generate a short-lived auth code and cache jwt_data.
+            code = secrets.token_urlsafe(32)
+            cache.set(f'auth_code:{code}', jwt_data, timeout=settings.OIDC_SL_CODE_TIMEOUT)
+            # add code as url param - fronted can use this to retrieve jwt
+            next_url = f'{next_url}?code={code}'
+            self.request.session.pop('next', None)  # remove from session
+        # use next_url if fronted login, else fallback to default admin login
         return next_url or resolve_url(self.get_settings('LOGIN_REDIRECT_URL', '/'))
 
     @staticmethod
