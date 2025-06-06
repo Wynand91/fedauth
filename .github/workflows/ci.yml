@@ -41,6 +41,4 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
 
       - name: Run tests
-        run: |
-          source venv/bin/activate
-          pytest
+        run: pytest
