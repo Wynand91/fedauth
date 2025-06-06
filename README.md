@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/Wynand91/fedauth/graph/badge.svg?token=2GMX7Z0ZPT)](https://codecov.io/gh/Wynand91/fedauth)
+
 # TODO: description
 # TODO: OIDC setup
 # TODO: customization (custom idp, templates etc)
