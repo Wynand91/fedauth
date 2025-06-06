@@ -4,7 +4,6 @@ from django.core.exceptions import ValidationError
 from fedauth.validators import validate_phone
 
 
-
 class TestPhoneValidator(TestCase):
 
     def test_valid_phone_number(self):

@@ -20,7 +20,7 @@ class ViewBase:
 
     def get_settings(self, attr, *args):
         try:
-            return self.get_model_config(attr,*args)
+            return self.get_model_config(attr, *args)
         except (ImproperlyConfigured, KeyError):
             # if not found we'll try to get settings from settings file.
             pass
@@ -28,7 +28,6 @@ class ViewBase:
             return import_from_settings(attr, *args)
         except ImproperlyConfigured:
             raise ImproperlyConfigured(self.get_improper_config_err(attr))
-
 
 
 class FedViewBase(ViewBase):
@@ -53,7 +52,6 @@ class FedViewBase(ViewBase):
         domain = username.split('@')[-1]
         self.domain = domain
         return get_federated_provider_settings(attr, domain, *args)
-
 
 
 class GenViewBase(ViewBase):

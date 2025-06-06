@@ -44,4 +44,3 @@ class TestUtils(TestCase):
         with self.assertRaises(ImproperlyConfigured) as exc:
             get_non_federated_provider_settings('MADE_UP_SETTING', self.alias)
         assert str(exc.exception) == 'Setting MADE_UP_SETTING not found'
-

@@ -1,8 +1,3 @@
-from abc import ABC
-
-from django.contrib.auth.backends import UserModel
-from django.core.exceptions import ImproperlyConfigured
-
 from fedauth.utils import get_federated_provider_settings, get_non_federated_provider_settings
 
 

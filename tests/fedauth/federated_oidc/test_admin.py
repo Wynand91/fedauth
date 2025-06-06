@@ -19,7 +19,6 @@ class TestFederatedOidcAdmin(TestCase):
         self.federated_provider = FederatedProviderFactory()
         self.create_url = reverse('admin:federated_oidc_federatedprovider_add')
 
-
     def test_create_fp_object_failure(self):
         resp = self.client.post(self.create_url, {})
         assert resp.status_code == 200

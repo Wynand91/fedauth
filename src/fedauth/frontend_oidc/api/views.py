@@ -1,6 +1,5 @@
 from django.core.exceptions import ValidationError as DjangoValidationError
 from django.core.validators import URLValidator
-from django.core.cache import cache
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
@@ -33,7 +32,6 @@ class OidcLoginView(CreateAPIView):
             url_validator(url_fail)
         except DjangoValidationError:
             raise ValidationError("Invalid 'next' or 'success' url")
-
 
     def create(self, request, *args, **kwargs):
         self.validate_url_parameters(request)

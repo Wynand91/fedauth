@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError, ImproperlyConfigured
 from mozilla_django_oidc.auth import OIDCAuthenticationBackend as DefaultOidcAuthBackend
 
 from fedauth.mixins import AuthBackendSettingsMixin
-from fedauth.validators import PhoneNumberValidator, validate_phone
+from fedauth.validators import validate_phone
 
 LOGGER = logging.getLogger(__name__)
 
@@ -80,7 +80,6 @@ class OIDCAuthenticationBackend(AuthBackendSettingsMixin, DefaultOidcAuthBackend
         user.last_name = claims.get('family_name', '')
         user.is_superuser = getattr(settings, "OIDC_SUPER_GROUP") in claims.get("groups", [])
         user.is_staff = getattr(settings, "OIDC_ADMIN_GROUP") in claims.get("groups", [])
-
 
         phone_number: str = claims.get('phone_number', '')
         if phone_number and hasattr(UserModel, 'phone'):  # TODO: make phone number field customizable.

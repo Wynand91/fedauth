@@ -52,7 +52,6 @@ class TestLoginApi(BaseApiTestCase):
         assert resp.status_code == 400
         assert resp.json() == {'non_field_errors': ['Submit either username OR provider, not both.']}
 
-
     def test_login_missing_url_param_validation(self):
         resp = self.post(url=self.login_url, data={})
         assert resp.status_code == 400
@@ -150,19 +149,19 @@ class TestTokenExchangeApi(BaseApiTestCase):
         )
 
     def test_exchange_invalid_code_length(self):
-        data={'code': 'expired_code' * 6}
+        data = {'code': 'expired_code' * 6}
         resp = self.post(self.url, data=data)
         assert resp.status_code == 400
         assert resp.json() == {'code': ['Ensure this field has no more than 64 characters.']}
 
     def test_exchange_invalid_code(self):
-        data={'code': 'expired_code'}
+        data = {'code': 'expired_code'}
         resp = self.post(self.url, data=data)
         assert resp.status_code == 400
         assert resp.json() == {'detail': ['Code Invalid or expired']}
 
     def test_exchange_valid_code(self):
-        data={'code': self.valid_code}
+        data = {'code': self.valid_code}
         resp = self.post(self.url, data=data)
         assert resp.status_code == 200
         assert resp.json() == self.jwt_data

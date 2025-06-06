@@ -28,7 +28,6 @@ class TestAuthenticationCallbackView(TestCase):
         self.callback_view.request.session['fail'] = self.failure_url
         self.callback_view.request.session['next'] = self.success_url
 
-
     def tearDown(self):
         # clear any sessions left over by tests.
         default_cache.clear()

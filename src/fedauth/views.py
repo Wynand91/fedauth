@@ -1,8 +1,8 @@
 import secrets
 
+from django.conf import settings
 from django.contrib.sessions.backends.cache import SessionStore
 from django.core.cache import cache
-from django.conf import settings
 from django.shortcuts import resolve_url
 from mozilla_django_oidc.views import (
     OIDCAuthenticationCallbackView

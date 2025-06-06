@@ -1,5 +1,5 @@
-from django.contrib.auth.views import LoginView as DjangoLoginView
 from django.conf import settings
+from django.contrib.auth.views import LoginView as DjangoLoginView
 from django.shortcuts import redirect
 from django.urls import reverse
 
