@@ -3,6 +3,8 @@ from django.core.validators import URLValidator
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
+from mozilla_django_oidc.views import get_next_url
 
 from fedauth.frontend_oidc.api.serializers import LoginSerializer, TokenExchangeSerializer
 
@@ -16,14 +18,15 @@ class OidcLoginView(CreateAPIView):
     The post request payload determines whether it's a federated login (username submitted), or a normal idP login (e.g. user clicked "log in with Facebook")
     """
     serializer_class = LoginSerializer
+    permission_classes = [AllowAny]
 
     @staticmethod
     def validate_url_parameters(request):
         """
         The frontend should be sending a success (next) url and a fail (fail) url parameter
         """
-        url_success = request.GET.get('next')
-        url_fail = request.GET.get('fail')
+        url_success = get_next_url(request, 'next')
+        url_fail = get_next_url(request, 'fail')
         if not url_success or not url_fail:
             raise ValidationError("Missing 'next' and/or 'fail' url parameters")
 
@@ -32,6 +35,10 @@ class OidcLoginView(CreateAPIView):
             url_validator(url_fail)
         except DjangoValidationError:
             raise ValidationError("Invalid 'next' or 'success' url")
+
+        # we need to add urls to session, so that callback knows where to redirect to.
+        request.session['next'] = url_success
+        request.session['fail'] = url_fail
 
     def create(self, request, *args, **kwargs):
         self.validate_url_parameters(request)
@@ -47,6 +54,7 @@ class TokenExchangeView(CreateAPIView):
     The unique code can be exchanged for jwt tokens using this view.
     """
     serializer_class = TokenExchangeSerializer
+    permission_classes = [AllowAny]
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)

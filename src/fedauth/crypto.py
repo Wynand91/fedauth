@@ -32,4 +32,9 @@ def decrypt(ciphertext: bytes, key: str | bytes = None) -> bytes:
     if key is None:
         key = settings.SECRET_KEY
     fernet = Fernet(key)
+
+    # Ensure ciphertext is bytes
+    if isinstance(ciphertext, memoryview):
+        ciphertext = ciphertext.tobytes()
+
     return fernet.decrypt(ciphertext)

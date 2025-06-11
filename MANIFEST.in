@@ -1,2 +1,2 @@
-# Include everything under the src directory for the source distribution
+# Include everything under the src directory for the source distribution (including html templates)
 graft src

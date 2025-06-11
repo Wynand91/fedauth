@@ -1,8 +1,6 @@
 from factory.django import DjangoModelFactory
 
-from fedauth.federated_oidc.models import FederatedProvider
-
-from fedauth.generic_oidc.models import GenericProvider
+from fedauth.models import FederatedProvider, GenericProvider
 
 
 class FederatedProviderFactory(DjangoModelFactory):

@@ -28,10 +28,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'rest_framework_simplejwt',
-
+    # fedauth package
     'fedauth',
-    'fedauth.generic_oidc',
-    'fedauth.federated_oidc'
 ]
 
 ROOT_URLCONF = 'tests.project.urls'
@@ -87,6 +85,7 @@ OIDC_AUTHENTICATION_CALLBACK_URL = 'oidc-provider-callback'
 OIDC_ADMIN_GROUP = 'admin'
 OIDC_SUPER_GROUP = 'superuser'
 
+# whitelist hosts for internal and frontend redirects (inlcude port number for localhosts)
 OIDC_REDIRECT_ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 OIDC_REDIRECT_REQUIRE_HTTPS = False
 

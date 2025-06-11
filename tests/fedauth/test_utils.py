@@ -2,8 +2,7 @@ from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.test import TestCase
 
-from fedauth.federated_oidc.models import FederatedProvider
-from fedauth.generic_oidc.models import GenericProvider
+from fedauth.models import FederatedProvider, GenericProvider
 from fedauth.utils import get_federated_provider_settings, get_non_federated_provider_settings
 from tests.factories import FederatedProviderFactory, GenericProviderFactory
 

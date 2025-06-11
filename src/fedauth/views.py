@@ -55,7 +55,7 @@ class AuthenticationCallbackView(OIDCAuthenticationCallbackView):
 
     def get(self, request):
         """
-        If oidc flow originates from frontend (via API), then there will be 2 separate sessions in play ny the time
+        If oidc flow originates from frontend (via API), then there will be 2 separate sessions in play by the time
         this callback is called by the idP. There will be:
         1 session between frontend and backend (session A)
         1 session between backend and idP (session B)
@@ -71,6 +71,7 @@ class AuthenticationCallbackView(OIDCAuthenticationCallbackView):
         session using the state parameter, and join the two sessions into one, thereby providing all the OIDC context
         that is needed for the callback authentication to happen.
         """
+
         state = request.GET.get('state')
         session_data = self.retrieve_session_by_id(state)  # retrieve original session
         if session_data:

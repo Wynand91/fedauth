@@ -2,9 +2,8 @@ from django.core.cache import cache
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from fedauth.federated_oidc.models import FederatedProvider
 from fedauth.frontend_oidc.utils import build_oidc_auth_url
-from fedauth.generic_oidc.models import GenericProvider
+from fedauth.models import GenericProvider, FederatedProvider
 
 
 def get_provider_options():

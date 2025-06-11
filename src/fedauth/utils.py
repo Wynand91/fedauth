@@ -1,8 +1,7 @@
 from mozilla_django_oidc.utils import import_from_settings
 
 from fedauth.constants import SETTINGS_MAP
-from fedauth.federated_oidc.models import FederatedProvider
-from fedauth.generic_oidc.models import GenericProvider
+from fedauth.models import FederatedProvider, GenericProvider
 
 
 def get_provider_config(provider, attr, *args):

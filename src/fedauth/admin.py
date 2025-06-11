@@ -1,7 +1,7 @@
 from django.contrib import admin
 
-from fedauth.federated_oidc.models import FederatedProvider
 from fedauth.forms import BaseProviderAdminForm
+from fedauth.models import FederatedProvider, GenericProvider
 
 
 class FederatedProviderForm(BaseProviderAdminForm):
@@ -23,6 +23,42 @@ class FederatedProviderAdmin(admin.ModelAdmin):
         'created_at',
         'updated_at',
         'domain',
+        'auth_endpoint',
+        'token_endpoint',
+        'user_endpoint',
+        'jwks_endpoint',
+        'client_id',
+        'sign_algo',
+        'scopes',
+    )
+    add_fields = ('client_secret',)
+
+    def get_fields(self, request, obj=None):
+        # only include client secret field when new object is being created
+        if not obj:
+            return self.fields + self.add_fields
+        return super().get_fields(request, obj)
+
+
+class GenericProviderForm(BaseProviderAdminForm):
+
+    class Meta:
+        model = GenericProvider
+        exclude = ('client_secret_cipher',)
+
+
+@admin.register(GenericProvider)
+class GenericProviderAdmin(admin.ModelAdmin):
+    list_display = ['created_at', 'provider']
+    list_filter = ['created_at', 'provider']
+    search_fields = ['provider']
+    ordering = ['provider']
+    form = GenericProviderForm
+    readonly_fields = ('created_at', 'updated_at',)
+    fields = (
+        'created_at',
+        'updated_at',
+        'provider',
         'auth_endpoint',
         'token_endpoint',
         'user_endpoint',

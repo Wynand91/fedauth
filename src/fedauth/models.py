@@ -16,7 +16,7 @@ class BaseProvider(TimeStampedModel):
     token_endpoint = models.URLField()
     user_endpoint = models.URLField()
     jwks_endpoint = models.URLField()
-    client_id = models.CharField(max_length=48)
+    client_id = models.CharField(max_length=250)
     client_secret_cipher = models.BinaryField()
     sign_algo = models.CharField(max_length=5, choices=SIGN_ALGOS, default='RS256')
     scopes = models.CharField(max_length=250, default="openid profile email phone groups")  # IP configured scopes
@@ -32,3 +32,17 @@ class BaseProvider(TimeStampedModel):
         self.client_secret_cipher = encrypt(client_secret.encode())
 
     client_secret = property(get_client_secret, set_client_secret)  # noqa
+
+
+class FederatedProvider(BaseProvider):
+    """
+    This model stores all the federated domain provider settings (e.g. 'company.com')
+    """
+    domain = models.CharField(max_length=48, unique=True)
+
+
+class GenericProvider(BaseProvider):
+    """
+    This model stores all the generic provider settings (for non-federated login - e.g. login with facebook etc)
+    """
+    provider = models.CharField(max_length=48, unique=True)

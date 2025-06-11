@@ -3,9 +3,9 @@ from django.contrib.admin.sites import AdminSite
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 
-from fedauth.generic_oidc.admin import GenericProviderAdmin
+from fedauth.admin import GenericProviderAdmin
 from fedauth.crypto import decrypt
-from fedauth.generic_oidc.models import GenericProvider
+from fedauth.models import GenericProvider
 from tests.base import FakeRequest
 from tests.factories import GenericProviderFactory
 
@@ -20,7 +20,7 @@ class TestGenericProviderAdmin(TestCase):
         )
         self.client.force_login(self.superuser)
         self.admin = GenericProviderAdmin(GenericProvider, AdminSite())
-        self.create_url = reverse('admin:generic_oidc_genericprovider_add')
+        self.create_url = reverse('admin:fedauth_genericprovider_add')
         self.gp = GenericProviderFactory()
 
     def test_get_fields(self):

@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 
 from fedauth.backends import OIDCAuthenticationBackend
-from fedauth.federated_oidc.models import FederatedProvider
+from fedauth.models import FederatedProvider
 from tests.base import FakeRequest
 from tests.factories import FederatedProviderFactory, GenericProviderFactory
 

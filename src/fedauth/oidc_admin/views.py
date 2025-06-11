@@ -3,7 +3,7 @@ from django.contrib.auth.views import LoginView as DjangoLoginView
 from django.shortcuts import redirect
 from django.urls import reverse
 
-from fedauth.federated_oidc.models import FederatedProvider
+from fedauth.models import FederatedProvider
 from fedauth.oidc_admin.forms import UsernameForm
 
 

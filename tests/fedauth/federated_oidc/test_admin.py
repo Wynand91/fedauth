@@ -3,9 +3,9 @@ from django.contrib.admin.sites import AdminSite
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 
-from fedauth.federated_oidc.admin import FederatedProviderAdmin
-from fedauth.federated_oidc.models import FederatedProvider
+from fedauth.admin import FederatedProviderAdmin
 from fedauth.crypto import decrypt
+from fedauth.models import FederatedProvider
 from tests.base import FakeRequest
 from tests.factories import FederatedProviderFactory
 
@@ -17,7 +17,7 @@ class TestFederatedOidcAdmin(TestCase):
         self.client.force_login(self.super_user)
         self.admin = FederatedProviderAdmin(FederatedProvider, AdminSite())
         self.federated_provider = FederatedProviderFactory()
-        self.create_url = reverse('admin:federated_oidc_federatedprovider_add')
+        self.create_url = reverse('admin:fedauth_federatedprovider_add')
 
     def test_create_fp_object_failure(self):
         resp = self.client.post(self.create_url, {})

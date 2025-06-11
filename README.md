@@ -16,14 +16,15 @@
 
 This package enables any Django project to support both **federated** and **generic** OIDC logins for the admin login page, and also provides APIs for frontend OIDC authentication.
 
-It's an OpenID Connect authentication package with support for multiple identity providers, all configurable via the database.
+It's an OpenID Connect authentication package with support for multiple identity providers, all configurable via database models and django admin portal.
 
 This package is built on top of [`mozilla-django-oidc`](https://mozilla-django-oidc.readthedocs.io/en/stable/).
 
 You can find all applicable `mozilla-django-oidc` configuration options [here](https://mozilla-django-oidc.readthedocs.io/en/stable/settings.html).
 
 
-# This package has two main OIDC flows:
+# This package has two main OIDC flows: 
+diagrams done with [draw.io](https://www.drawio.com/)
 
 ## A) Django Admin OIDC (Federated or Generic OIDC)
 
@@ -33,8 +34,15 @@ You can find all applicable `mozilla-django-oidc` configuration options [here](h
 
 ![OIDC login flow](diagrams/frontend_flow.png)
 
-# TODO: request/response bodies
-# TODO: OIDC setup
+# 🔧 IDP setup for local testing
+
+
+See [Testing with Okta](docs/okta_setup.md) for step-by-step idP setup instructions.
+
+
+# TODO: request/response bodies # !!!!!!!!!!!!!!!!!!!!!!!
+
+
 # TODO: customization (custom idp, templates etc)
 # TODO: flow diagrams
 
