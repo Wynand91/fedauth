@@ -46,7 +46,7 @@ OIDC_SUPER_GROUP = 'superusers'
 OIDC_REDIRECT_ALLOWED_HOSTS = os.getenv('OIDC_REDIRECT_ALLOWED_HOSTS', ['localhost', '127.0.0.1', 'localhost:8001'])  # add your frontend urls
 OIDC_REDIRECT_REQUIRE_HTTPS = os.getenv('OIDC_REDIRECT_REQUIRE_HTTPS', True)  # NOTE - set this to false during testing
 
-OIDC_SL_CODE_TIMEOUT = os.getenv('OIDC_SL_CODE_TIMEOUT', 60)
+OIDC_SL_CODE_TIMEOUT = os.getenv('OIDC_SL_CODE_TIMEOUT', 60)  # lifetime of short-lived code used for token exchange
 ```
 
 This package also requires redis to be set up
