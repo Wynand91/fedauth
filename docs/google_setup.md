@@ -41,11 +41,11 @@
 ## Step 5: Add config in Django app.
  - With you Django app running, navigate to admin > Generic Providers
  - Give your provider a name, e.g. ‘google’.
- - Add the following values
-		client id = your-google-client-id
-		client secret = your-google-client-secret
-		auth endpoint = https://accounts.google.com/o/oauth2/v2/auth
-		token endpoint = https://oauth2.googleapis.com/token
-		user endpoint = https://openidconnect.googleapis.com/v1/userinfo
-		jwks endpoint = https://www.googleapis.com/oauth2/v3/certs
-  - Save.
+ - Add the following values:
+   - client id = your-google-client-id
+   - client secret = your-google-client-secret
+   - auth endpoint = https://accounts.google.com/o/oauth2/v2/auth
+   - token endpoint = https://oauth2.googleapis.com/token
+   - user endpoint = https://openidconnect.googleapis.com/v1/userinfo
+   - jwks endpoint = https://www.googleapis.com/oauth2/v3/certs
+ - Save.

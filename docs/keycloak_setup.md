@@ -62,7 +62,7 @@ In your running Django app admin, go to Federated Provider model view and add a 
 - client id: this is the client ID of your app in KeyCloak dashboard (usually your app client name or whatever id you chose when creating the client)  - On keycloak dashboard, select ‘Clients’,  then ‘settings’ tab to find your client ID
 - secret key: On KeyCloak dashboard, select ‘Clients’,  then ‘credentials’ tab to find your secret key.
 - endpoints: Endpoints for KeyCloak client - Replace {realm-name} with your realm’s name:
-	•	Authorization endpoint: http://localhost:8080/realms/{realm-name}/protocol/openid-connect/auth
-	•	Token endpoint: http://localhost:8080/realms/{realm-name}/protocol/openid-connect/token
-	•	Userinfo endpoint: http://localhost:8080/realms/{realm-name}/protocol/openid-connect/userinfo
-	•	JWKS endpoint: http://localhost:8080/realms/{realm-name}/protocol/openid-connect/certs
+  - Authorization endpoint: http://localhost:8080/realms/{realm-name}/protocol/openid-connect/auth
+  - Token endpoint: http://localhost:8080/realms/{realm-name}/protocol/openid-connect/token
+  - Usrinfo endpoint: http://localhost:8080/realms/{realm-name}/protocol/openid-connect/userinfo
+  - JWKS endpoint: http://localhost:8080/realms/{realm-name}/protocol/openid-connect/certs
