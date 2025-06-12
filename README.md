@@ -15,6 +15,10 @@
 - [Template customization](#customizing-admin-login-template)
 - [License](#license)
 
+Requirements:
+ - python 3.11+
+ - django >= 4.2, < 5.0
+
 # Overview
 
 This package enables any Django project to support both **federated** and **generic** OIDC logins for the admin login page, and also provides APIs for frontend OIDC authentication.
