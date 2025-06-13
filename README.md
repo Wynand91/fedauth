@@ -29,6 +29,7 @@ This package is built on top of [`mozilla-django-oidc`](https://mozilla-django-o
 
 You can find all applicable `mozilla-django-oidc` configuration options [here](https://mozilla-django-oidc.readthedocs.io/en/stable/settings.html).
 
+![login screenshot](docs/login_example.png)
 
 ## Terminology
 
@@ -78,11 +79,11 @@ diagrams done with [draw.io](https://www.drawio.com/)
 
 ## A) Django Admin OIDC (Federated or Generic OIDC)
 
-![OIDC login flow](diagrams/admin_oidc_flow.png)
+![OIDC login flow](docs/diagrams/admin_oidc_flow.png)
 
 ## A) Frontend API OIDC (Federated or Generic OIDC)
 
-![OIDC login flow](diagrams/frontend_flow.png)
+![OIDC login flow](docs/diagrams/frontend_flow.png)
 
 # IDP setup for local testing
 

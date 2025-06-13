@@ -1,4 +1,7 @@
 # Generic Admin login
+> **Note**: For now there isn't really a point in adding this option, since generic idP can't have group scopes in token, meaning the correct admin permissions can't be assigned after successful idP authentication.
+> 
+> This will get addressed in a next release.
 - This package provides a model (**GenericProvider**) that stores credentials for OIDC auth providers.
 - This is for the **"log in with ..."** options on admin login form. In our example we will use google.
 
