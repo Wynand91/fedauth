@@ -6,6 +6,7 @@
 ## Table of Contents
 
 - [Overview](#overview)
+- [Requirements](#requirements)
 - [Installation](#installation)
 - [Flow diagrams](#flow-diagrams)
 - [IDP setup for local testing](#idp-setup-for-local-testing)
@@ -18,9 +19,16 @@
 - [Template customization](#customizing-admin-login-template)
 - [License](#license)
 
-Requirements:
- - python 3.11+
- - django >= 4.2, < 5.0
+# Requirements:
+- Python 3.11+
+- Django >= 4.2, < 5.0
+
+This package will automatically install the following dependencies if not already present:
+- djangorestframework >= 3.15
+- djangorestframework-simplejwt >= 5.3
+- django-redis >= 5.4
+- mozilla-django-oidc
+- python-dotenv
 
 # Overview
 
