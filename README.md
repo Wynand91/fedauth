@@ -87,7 +87,7 @@ diagrams done with [draw.io](https://www.drawio.com/)
 
 ## A) Django Admin OIDC (Dynamic or Stativ OIDC)
 
-![OIDC login flow](docs/diagrams/admin_oidc_flow.png)
+![OIDC login flow](docs/diagrams/admin_flow.png)
 
 ## A) Frontend API OIDC (Dynamic or Static OIDC)
 
@@ -207,7 +207,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # register fedauth auth urls (authentication, callback and logout url)
     path('oidc/', include('fedauth.urls')),
-    # include any static oidc providers if using any
+    # include any static oidc providers if using any on admin login form
     path('jumpcloud/authenticate/', JumpCloudAuthRequestView.as_view(), name="jumpcloud_authentication_init",),
     path('', include(api_urls)),
 ]
