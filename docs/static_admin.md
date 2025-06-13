@@ -20,7 +20,7 @@
   ```python
    # src/project/custom_oidc/views
      
-  from fedauth.static.views import StaticAuthenticationRequestView
+  from fedauth.static_oidc.views import StaticAuthenticationRequestView
      
   class JumpcloudAuthRequestView(StaticAuthenticationRequestView):
       def __init__(self):
