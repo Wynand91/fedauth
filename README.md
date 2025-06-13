@@ -7,7 +7,7 @@
 
 - [Overview](#overview)
 - [Installation](#installation)
-- [Flow diagrams](#flows-diagrams-)
+- [Flow diagrams](#flow-diagrams)
 - [IDP setup for local testing](#idp-setup-for-local-testing)
 - [Admin OIDC setup](#admin-oidc-setup)
 - [Demo: Admin OIDC](#admin-demo)
@@ -82,7 +82,7 @@ To install, run:
     pip install git+https://github.com/Wynand91/fedauth.git
 
 
-# Flows diagrams: 
+# Flow diagrams
 diagrams done with [draw.io](https://www.drawio.com/)
 
 ## A) Django Admin OIDC (Dynamic or Stativ OIDC)
