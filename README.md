@@ -7,12 +7,12 @@
 
 - [Overview](#overview)
 - [Installation](#installation)
-- [Flow diagrams](#fedauth-oidc-flows-diagrams-)
+- [Flow diagrams](#flows-diagrams-)
 - [IDP setup for local testing](#idp-setup-for-local-testing)
 - [Admin OIDC setup](#admin-oidc-setup)
 - [Demo: Admin OIDC](#admin-demo)
 - [Frontend OIDC API setup](#frontend-oidc-api-setup)
-- [Demo: Frontend OIDC](#frontend-demo)
+- [Demo: Frontend OIDC](#frontend-api-demo)
 - [Example 'settings.py'](#settingspy-example)
 - [Example 'urls.py'](#url-registration)
 - [Template customization](#customizing-admin-login-template)
@@ -82,7 +82,7 @@ To install, run:
     pip install git+https://github.com/Wynand91/fedauth.git
 
 
-# Fedauth OIDC flows diagrams: 
+# Flows diagrams: 
 diagrams done with [draw.io](https://www.drawio.com/)
 
 ## A) Django Admin OIDC (Dynamic or Stativ OIDC)
@@ -159,11 +159,11 @@ Okta setup](docs/okta_setup.md)
   - When the username is submitted, the backend will check the email domain, and redirect the user to the auth provider if the 
 domain is found in the DynamicProvider table.
   - If domain is not found, the admin will show a login from including a password field to handle default login.
-  - see this doc for instructions: [Dynamic admin login](docs/dynamic_admin)
+  - see this doc for instructions: [Dynamic admin login](docs/dynamic_admin.md)
 
 - Static login
   - You also have the option of adding a e.g. 'Login with ...' option
-  - see this doc for instructions: [Static admin login](docs/static_admin)
+  - see this doc for instructions: [Static admin login](docs/static_admin.md)
 
 ## Admin Demo:
 

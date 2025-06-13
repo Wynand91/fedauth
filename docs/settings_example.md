@@ -28,7 +28,7 @@ AUTHENTICATION_BACKENDS = [
 
 ]
 
-LOGIN_TEMPLATE = 'admin/custom_login.html'  # if you are using a custom template for generic OIDC login options, else this can be omitted.
+LOGIN_TEMPLATE = 'admin/custom_login.html'  # if you are using a custom template for static OIDC login options, else this can be omitted.
 
 # for authentication backend to know where to redirect admin after authentication. Change as per project requirements.
 LOGIN_REDIRECT_URL = '/admin/'
