@@ -4,23 +4,23 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 
 from fedauth.backends import OIDCAuthenticationBackend
-from fedauth.models import FederatedProvider
+from fedauth.models import DynamicProvider, StaticProvider
 from tests.base import FakeRequest
-from tests.factories import FederatedProviderFactory, GenericProviderFactory
+from tests.factories import DynamicProviderFactory, StaticProviderFactory
 
 
-class TestFederatedAuthenticationBackend(TestCase):
+class TestAuthenticationBackend(TestCase):
     """
     We need to test that the FProviderSettingsMixin overrides the way settings is obtained (normally it would
     be done via mozilla's default 'get_settings' method, but our mixin should override that)
     """
     def setUp(self):
-        # set up federated provider obj
+        # set up dynamic provider obj
         self.domain = 'company.com'
-        self.fed_provider: FederatedProvider = FederatedProviderFactory(domain=self.domain)
-        # set up generic provider obj
+        self.dyn_provider: DynamicProvider = DynamicProviderFactory(domain=self.domain)
+        # set up static provider obj
         self.provider = 'jumpcloud'
-        self.gen_provider: FederatedProvider = GenericProviderFactory(provider=self.provider)
+        self.stat_provider: StaticProvider = StaticProviderFactory(provider=self.provider)
         self.backend = OIDCAuthenticationBackend()
         self.backend.request = FakeRequest
         self.backend.request.session.clear()
@@ -35,24 +35,23 @@ class TestFederatedAuthenticationBackend(TestCase):
         # the 'configure_oidc_settings' should retrieve and populate the class attributes
         self.backend.request.session['domain'] = self.domain  # method requires domain
         self.backend.configure_oidc_settings()
-        assert self.backend.OIDC_OP_TOKEN_ENDPOINT == self.fed_provider.token_endpoint
-        assert self.backend.OIDC_OP_USER_ENDPOINT == self.fed_provider.user_endpoint
-        assert self.backend.OIDC_OP_JWKS_ENDPOINT == self.fed_provider.jwks_endpoint
-        assert self.backend.OIDC_RP_CLIENT_ID == self.fed_provider.client_id
-        assert self.backend.OIDC_RP_CLIENT_SECRET == self.fed_provider.client_secret
-        assert self.backend.OIDC_RP_SIGN_ALGO == self.fed_provider.sign_algo
+        assert self.backend.OIDC_OP_TOKEN_ENDPOINT == self.dyn_provider.token_endpoint
+        assert self.backend.OIDC_OP_USER_ENDPOINT == self.dyn_provider.user_endpoint
+        assert self.backend.OIDC_OP_JWKS_ENDPOINT == self.dyn_provider.jwks_endpoint
+        assert self.backend.OIDC_RP_CLIENT_ID == self.dyn_provider.client_id
+        assert self.backend.OIDC_RP_CLIENT_SECRET == self.dyn_provider.client_secret
+        assert self.backend.OIDC_RP_SIGN_ALGO == self.dyn_provider.sign_algo
 
-    def test_configure_oidc_settings_method_for_generic_provider(self):
+    def test_configure_oidc_settings_method_for_static_provider(self):
         # the 'configure_oidc_settings' should retrieve and populate the class attributes
-        # self.backend.request = FakeRequest
         self.backend.request.session['provider'] = self.provider   # method requires provider
         self.backend.configure_oidc_settings()
-        assert self.backend.OIDC_OP_TOKEN_ENDPOINT == self.gen_provider.token_endpoint
-        assert self.backend.OIDC_OP_USER_ENDPOINT == self.gen_provider.user_endpoint
-        assert self.backend.OIDC_OP_JWKS_ENDPOINT == self.gen_provider.jwks_endpoint
-        assert self.backend.OIDC_RP_CLIENT_ID == self.gen_provider.client_id
-        assert self.backend.OIDC_RP_CLIENT_SECRET == self.gen_provider.client_secret
-        assert self.backend.OIDC_RP_SIGN_ALGO == self.gen_provider.sign_algo
+        assert self.backend.OIDC_OP_TOKEN_ENDPOINT == self.stat_provider.token_endpoint
+        assert self.backend.OIDC_OP_USER_ENDPOINT == self.stat_provider.user_endpoint
+        assert self.backend.OIDC_OP_JWKS_ENDPOINT == self.stat_provider.jwks_endpoint
+        assert self.backend.OIDC_RP_CLIENT_ID == self.stat_provider.client_id
+        assert self.backend.OIDC_RP_CLIENT_SECRET == self.stat_provider.client_secret
+        assert self.backend.OIDC_RP_SIGN_ALGO == self.stat_provider.sign_algo
 
     @patch('fedauth.backends.OIDCAuthenticationBackend.configure_oidc_settings')
     @patch('mozilla_django_oidc.auth.OIDCAuthenticationBackend.authenticate')

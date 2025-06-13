@@ -1,7 +1,7 @@
 from mozilla_django_oidc.utils import import_from_settings
 
 from fedauth.constants import SETTINGS_MAP
-from fedauth.models import FederatedProvider, GenericProvider
+from fedauth.models import DynamicProvider, StaticProvider
 
 
 def get_provider_config(provider, attr, *args):
@@ -17,11 +17,11 @@ def get_provider_config(provider, attr, *args):
     return getattr(provider, attr)
 
 
-def get_federated_provider_settings(attr, domain, *args):
-    provider = FederatedProvider.objects.get(domain=domain)
+def get_dynamic_provider_settings(attr, domain, *args):
+    provider = DynamicProvider.objects.get(domain=domain)
     return get_provider_config(provider, attr, *args)
 
 
-def get_non_federated_provider_settings(attr, alias, *args):
-    provider = GenericProvider.objects.get(provider=alias)
+def get_static_provider_settings(attr, alias, *args):
+    provider = StaticProvider.objects.get(provider=alias)
     return get_provider_config(provider, attr, *args)

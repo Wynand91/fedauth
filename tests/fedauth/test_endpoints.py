@@ -1,13 +1,13 @@
 from django.urls import reverse_lazy
 
 from tests.base import BaseApiTestCase
-from tests.factories import GenericProviderFactory
+from tests.factories import StaticProviderFactory
 
 
 class TestOidcAuthEndpoints(BaseApiTestCase):
 
     def setUp(self):
-        self.generic_provider = GenericProviderFactory()
+        self.static_provider = StaticProviderFactory()
         self.auth_url = reverse_lazy('jumpcloud_authentication_init')
         self.callback_url = reverse_lazy('oidc-provider-callback')
 

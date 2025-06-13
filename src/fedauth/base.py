@@ -2,7 +2,7 @@ from django.contrib.auth.backends import UserModel
 from django.core.exceptions import ImproperlyConfigured
 from mozilla_django_oidc.utils import import_from_settings
 
-from fedauth.utils import get_non_federated_provider_settings, get_federated_provider_settings
+from fedauth.utils import get_static_provider_settings, get_dynamic_provider_settings
 
 
 class ViewBase:
@@ -30,7 +30,7 @@ class ViewBase:
             raise ImproperlyConfigured(self.get_improper_config_err(attr))
 
 
-class FedViewBase(ViewBase):
+class DynamicViewBase(ViewBase):
     """
     NOTE!
     Ensure that this class is FIRST in MRO when being inherited.
@@ -51,10 +51,10 @@ class FedViewBase(ViewBase):
 
         domain = username.split('@')[-1]
         self.domain = domain
-        return get_federated_provider_settings(attr, domain, *args)
+        return get_dynamic_provider_settings(attr, domain, *args)
 
 
-class GenViewBase(ViewBase):
+class StaticViewBase(ViewBase):
     """
     NOTE!
     Ensure that this class is FIRST in MRO when being inherited.
@@ -65,4 +65,4 @@ class GenViewBase(ViewBase):
         return f"Setting {attr} not found for provider: '{self.alias}'"
 
     def get_model_config(self, attr, *args):
-        return get_non_federated_provider_settings(attr, self.alias, *args)
+        return get_static_provider_settings(attr, self.alias, *args)

@@ -3,7 +3,7 @@ from django.contrib.auth.views import LoginView as DjangoLoginView
 from django.shortcuts import redirect
 from django.urls import reverse
 
-from fedauth.models import FederatedProvider
+from fedauth.models import DynamicProvider
 from fedauth.oidc_admin.forms import UsernameForm
 
 
@@ -29,7 +29,7 @@ class LoginView(DjangoLoginView):
             username = form.cleaned_data['username']
             domain = username.split('@')[-1]
             # 2. check if there is a federated provider object that matches domain
-            db_provider_exists = FederatedProvider.objects.filter(domain=domain).exists()
+            db_provider_exists = DynamicProvider.objects.filter(domain=domain).exists()
             # 3. Determine which view to redirect to
             # 'fed-provider-auth' for OIDC authentication flow, 'default-admin-login' for standard django auth flow
             if db_provider_exists:

@@ -30,11 +30,11 @@
   - The login is a post request that requires either a 'username' (email) or a 'provider'  in 
 the request data:
   - > - **'username'** (email) :
-    >   - If a **username** is in request body, the API will check if the username domain is listed in the Federated Provider table.
+    >   - If a **username** is in request body, the API will check if the username domain is listed in the Dynamic Provider table.
     >   - If the **domain is found**, the auth url is built by API and returned to the frontend, who can then redirect to idP.
     >   - If the **domain is not found**, there will be no auth url in the response, and it is up to frontend to handle default login then (username and password) - Meaning your app should also rely on a default login
     >   - or **'provider'**:
-    >     - If a **provider** is in the request body, the API will check if there is such a provider in the Generic Provider table, and built the idP auth url, 
+    >     - If a **provider** is in the request body, the API will check if there is such a provider in the Static Provider table, and built the idP auth url, 
     >     - which is found in response.
 
 # Handling the response
@@ -43,7 +43,7 @@ the request data:
 - The frontend should then redirect the user to the idP provider
 
 # Below is a python code sample of how to call the login endpoint and how to handle response
-## For federated login request:
+## For dynamic login request:
 * This will happen when user submits username/email*
 ```python
 # do API call to backend
@@ -62,7 +62,7 @@ if resp.status_code == 200:
 
 return redirect('login_default')  # your default login view
 ```
-## For generic login request:
+## For static login request:
 * This will happen when user clicks e.g 'Log in with Google'*
 ```python
 # do API call to backend

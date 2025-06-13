@@ -3,11 +3,11 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from fedauth.frontend_oidc.utils import build_oidc_auth_url
-from fedauth.models import GenericProvider, FederatedProvider
+from fedauth.models import StaticProvider, DynamicProvider
 
 
 def get_provider_options():
-    providers = GenericProvider.objects.all()
+    providers = StaticProvider.objects.all()
     return [(prov.provider, prov.provider) for prov in providers]
 
 
@@ -32,23 +32,23 @@ class LoginSerializer(serializers.Serializer):
         """
         return [
             (p.provider, p.provider)
-            for p in GenericProvider.objects.all()
+            for p in StaticProvider.objects.all()
         ]
 
     def populate_auth_url(self, attrs):
         auth_url = None
-        # if username field is populated in payload - It's a federated login
+        # if username field is populated in payload - It's a dynamic login
         username = attrs.get('username')
         request = self.context['request']
         if username:
             domain = username.split('@')[-1]
-            provider = FederatedProvider.objects.filter(domain=domain)
+            provider = DynamicProvider.objects.filter(domain=domain)
             if provider.exists():
                 auth_url = build_oidc_auth_url(request, provider.first())
         else:
-            # if there is no username in post data - we assume that it isn't a federated username ('Login with x')
+            # if there is no username in post data - we assume that it isn't a dynamic login ('Login with x')
             gen_provider = attrs.get('provider')
-            provider = GenericProvider.objects.filter(provider=gen_provider)
+            provider = StaticProvider.objects.filter(provider=gen_provider)
             if provider.exists():
                 auth_url = build_oidc_auth_url(request, provider.first())
         attrs['auth_url'] = auth_url

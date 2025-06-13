@@ -1,14 +1,14 @@
 from django.urls import reverse_lazy
 
 from tests.base import BaseApiTestCase
-from tests.factories import FederatedProviderFactory
+from tests.factories import DynamicProviderFactory
 
 
 class TestDbProviderAuthEndpoints(BaseApiTestCase):
 
     def setUp(self):
         username = 'andy@random.com'
-        self.provider_fed = FederatedProviderFactory(domain='random.com')
+        self.provider_fed = DynamicProviderFactory(domain='random.com')
         self.auth_url = reverse_lazy('fed-provider-auth', kwargs={'username': username})
 
     def test_db_provider_authenticate_redirect(self):

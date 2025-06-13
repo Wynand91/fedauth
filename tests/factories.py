@@ -1,9 +1,9 @@
 from factory.django import DjangoModelFactory
 
-from fedauth.models import FederatedProvider, GenericProvider
+from fedauth.models import DynamicProvider, StaticProvider
 
 
-class FederatedProviderFactory(DjangoModelFactory):
+class DynamicProviderFactory(DjangoModelFactory):
     domain = 'company.com'
     auth_endpoint = 'https://oauth.id.okta.com/oauth2/auth'
     token_endpoint = 'https://oauth.id.okta.com/oauth2/token'
@@ -14,10 +14,10 @@ class FederatedProviderFactory(DjangoModelFactory):
     sign_algo = 'HS256'
 
     class Meta:
-        model = FederatedProvider
+        model = DynamicProvider
 
 
-class GenericProviderFactory(DjangoModelFactory):
+class StaticProviderFactory(DjangoModelFactory):
     provider = 'jumpcloud'
     auth_endpoint = 'https://oauth.id.jumpcloud.com/oauth2/auth'
     token_endpoint = 'https://oauth.id.jumpcloud.com/oauth2/token'
@@ -28,4 +28,4 @@ class GenericProviderFactory(DjangoModelFactory):
     sign_algo = 'HS256'
 
     class Meta:
-        model = GenericProvider
+        model = StaticProvider

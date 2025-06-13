@@ -1,14 +1,14 @@
 from django.urls import reverse_lazy
 
 from tests.base import BaseApiTestCase
-from tests.factories import FederatedProviderFactory
+from tests.factories import DynamicProviderFactory
 
 
 class TestAdminLoginView(BaseApiTestCase):
 
     def setUp(self):
         self.username = 'wynand@byteorbit.com'
-        self.provider = FederatedProviderFactory(domain='byteorbit.com')
+        self.provider = DynamicProviderFactory(domain='byteorbit.com')
         self.auth_url = reverse_lazy('admin-login')
 
     def test_admin_with_federated_username(self):

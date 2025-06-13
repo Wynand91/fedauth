@@ -1,8 +1,8 @@
 from django.core.exceptions import ImproperlyConfigured
 from django.test import TestCase
 
-from fedauth.federated_oidc.views import FederatedAuthenticationRequestView
-from tests.factories import FederatedProviderFactory
+from fedauth.dynamic_oidc.views import DynamicAuthenticationRequestView
+from tests.factories import DynamicProviderFactory
 
 
 class TestDatabaseProviderViews(TestCase):
@@ -14,8 +14,8 @@ class TestDatabaseProviderViews(TestCase):
     def setUp(self):
         username = 'john@random.com'
         self.domain = 'random.com'
-        self.provider_fed = FederatedProviderFactory(domain=self.domain)
-        self.request_view = FederatedAuthenticationRequestView(username=username)
+        self.provider_fed = DynamicProviderFactory(domain=self.domain)
+        self.request_view = DynamicAuthenticationRequestView(username=username)
 
     def test_auth_request_view_get_db_settings(self):
         # class attributes should be None after init. Only gets set in get request flow

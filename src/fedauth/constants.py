@@ -1,4 +1,4 @@
-# mapping of FederatedProvider model fieldnames
+# mapping of Provider model fieldnames
 SETTINGS_MAP = {
     'OIDC_OP_AUTHORIZATION_ENDPOINT': 'auth_endpoint',
     'OIDC_OP_TOKEN_ENDPOINT': 'token_endpoint',

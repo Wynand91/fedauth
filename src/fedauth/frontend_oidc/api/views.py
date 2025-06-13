@@ -15,7 +15,7 @@ class OidcLoginView(CreateAPIView):
     """
     This view is used for when you have a frontend app that requires OIDC login.
     The view constructs the idP url and returns it to the frontend.
-    The post request payload determines whether it's a federated login (username submitted), or a normal idP login (e.g. user clicked "log in with Facebook")
+    The post request payload determines whether it's a dynamic login (username submitted), or a static idP login (e.g. user clicked "log in with Facebook")
     """
     serializer_class = LoginSerializer
     permission_classes = [AllowAny]

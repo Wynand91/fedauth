@@ -1,17 +1,17 @@
 from django.core.exceptions import ImproperlyConfigured
 from django.test import TestCase
 
-from fedauth.generic_oidc.views import GenericAuthenticationRequestView
-from tests.factories import GenericProviderFactory
+from fedauth.static_oidc.views import StaticAuthenticationRequestView
+from tests.factories import StaticProviderFactory
 
 
 class TestAuthenticationRequestView(TestCase):
 
     def setUp(self):
         self.prov = 'fb'
-        self.request_view = GenericAuthenticationRequestView()
+        self.request_view = StaticAuthenticationRequestView()
         self.request_view.alias = self.prov
-        self.gen_provider = GenericProviderFactory(provider=self.prov)
+        self.gen_provider = StaticProviderFactory(provider=self.prov)
 
     def test_auth_request_view_get_settings(self):
         # class attributes should be None after init. Only gets set in get request flow

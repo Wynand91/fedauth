@@ -10,27 +10,27 @@ from mozilla_django_oidc.utils import (
 )
 from mozilla_django_oidc.views import get_next_url
 
-from fedauth.models import FederatedProvider, GenericProvider
-from fedauth.utils import get_non_federated_provider_settings, get_federated_provider_settings
+from fedauth.models import DynamicProvider, StaticProvider
+from fedauth.utils import get_static_provider_settings, get_dynamic_provider_settings
 
 
 def get_settings(req, attr, *args):
     domain = req.session.get('domain')
     provider = req.session.get('provider')
     if domain:
-        return get_federated_provider_settings(attr, domain, *args)
-    return get_non_federated_provider_settings(attr, provider, *args)
+        return get_dynamic_provider_settings(attr, domain, *args)
+    return get_static_provider_settings(attr, provider, *args)
 
 
-def build_oidc_auth_url(request, provider: Union[FederatedProvider, str]):
+def build_oidc_auth_url(request, provider: Union[DynamicProvider, str]):
     # throughout this method we populate the session with values that is needed later in the flow (e.g. during callback)
     request.session['next'] = get_next_url(request, 'next')
     request.session['fail'] = get_next_url(request, 'fail')
 
     # store values in session, so that we have context during callback
-    if isinstance(provider, FederatedProvider):
+    if isinstance(provider, DynamicProvider):
         request.session['domain'] = provider.domain
-    elif isinstance(provider, GenericProvider):
+    elif isinstance(provider, StaticProvider):
         request.session['provider'] = provider.provider
     else:
         raise ImproperlyConfigured('Invalid provider')

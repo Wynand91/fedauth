@@ -15,7 +15,7 @@
    - Choose a name
    - The grant type should be *'Client Credentials'* & *'Authorization Code'*. The *'Authorization Code'* should be always enabled.
    - Click Save.
- - Here are the endpoints needed for the Federated Provider model. 
+ - Here are the endpoints needed for the Dynamic/Static Provider model. 
    - Your **domain** can be found in the dropdown menu under username in top right corner, e.g `https://dev-28035502.okta.com`):
    - auth_endpoint: <https://your.domain.com/oauth2/v1/authorize/>
    - token_endpoint: <https://your.domain.com/oauth2/v1/token/>

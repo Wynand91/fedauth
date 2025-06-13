@@ -7,7 +7,7 @@ from django.test import override_settings
 from django.urls import reverse
 
 from tests.base import BaseApiTestCase
-from tests.factories import FederatedProviderFactory, GenericProviderFactory
+from tests.factories import DynamicProviderFactory, StaticProviderFactory
 
 FRONTEND_URL = 'www.fronted.com'
 
@@ -16,8 +16,8 @@ FRONTEND_URL = 'www.fronted.com'
 class TestLoginApi(BaseApiTestCase):
 
     def setUp(self):
-        self.fp = FederatedProviderFactory(domain='hogwarts.com')
-        self.gp = GenericProviderFactory(provider='okta')
+        self.fp = DynamicProviderFactory(domain='hogwarts.com')
+        self.gp = StaticProviderFactory(provider='okta')
         self.login_url = reverse('oidc-provider-login')
         self.valid_url = f'https://{FRONTEND_URL}'
         self.invalid_url = 'fake_url'
@@ -78,7 +78,7 @@ class TestLoginApi(BaseApiTestCase):
 
     def test_login_username_request_success(self):
         """
-        if post data contains 'username', we know it's a federated OIDC flow
+        if post data contains 'username', we know it's a dynamic OIDC flow
         """
         data = {'username': 'hagrid@hogwarts.com'}
         resp = self.post(url=self.full_url, data=data)
@@ -100,12 +100,12 @@ class TestLoginApi(BaseApiTestCase):
         assert session.get('next') == self.valid_url
         assert session.get('fail') == self.valid_url
 
-        # double check that provider isn't in session (since not a generic oidc login request)
+        # double check that provider isn't in session (since not a static oidc login request)
         assert not session.get('provider')
 
-    def test_login_generic_provider_request_success(self):
+    def test_login_static_provider_request_success(self):
         """
-        if post data contains 'provider', we know it's a generic OIDC flow (e.g. 'login with Facebook')
+        if post data contains 'provider', we know it's a static OIDC flow (e.g. 'login with Facebook')
         """
         provider = 'okta'
         data = {'provider': provider}
@@ -128,7 +128,7 @@ class TestLoginApi(BaseApiTestCase):
         assert session.get('next') == self.valid_url
         assert session.get('fail') == self.valid_url
 
-        # double check that domain isn't in session (since not a federated login request)
+        # double check that domain isn't in session (since not a dynamic login request)
         assert not session.get('domain')
 
 

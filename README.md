@@ -2,6 +2,7 @@
 
 [![codecov](https://codecov.io/gh/Wynand91/fedauth/graph/badge.svg?token=2GMX7Z0ZPT)](https://codecov.io/gh/Wynand91/fedauth)
 
+
 ## Table of Contents
 
 - [Overview](#overview)
@@ -9,8 +10,10 @@
 - [Flow diagrams](#fedauth-oidc-flows-diagrams-)
 - [IDP setup for local testing](#idp-setup-for-local-testing)
 - [Admin OIDC setup](#admin-oidc-setup)
+- [Demo: Admin OIDC](#admin-demo)
 - [Frontend OIDC API setup](#frontend-oidc-api-setup)
-- [Example 'settings.py'](#configuration)
+- [Demo: Frontend OIDC](#frontend-demo)
+- [Example 'settings.py'](#settingspy-example)
 - [Example 'urls.py'](#url-registration)
 - [Template customization](#customizing-admin-login-template)
 - [License](#license)
@@ -21,9 +24,9 @@ Requirements:
 
 # Overview
 
-This package enables any Django project to support both **federated** and **generic** OIDC logins for the admin login page, and also provides APIs for frontend OIDC authentication.
-
-It's an OpenID Connect authentication package with support for multiple identity providers, all configurable via database models and the django admin portal.
+Fedauth is a Django package that enables federated admin logins using OpenID Connect (OIDC). The package supports a 
+multi-tenant federated authentication flow, allowing different organizations (clients) to log into the django admin via their own 
+identity providers (IdPs), while also supporting a default login method for internal users.
 
 This package is built on top of [`mozilla-django-oidc`](https://mozilla-django-oidc.readthedocs.io/en/stable/).
 
@@ -33,39 +36,44 @@ You can find all applicable `mozilla-django-oidc` configuration options [here](h
 
 ## Terminology
 
-- **Federated OIDC**:
+- **idP**: 
 
-    Refers to login flows where the username or email domain is associated with a specific organization that uses its own OIDC Identity Provider. The package retrieves the appropriate OIDC configuration by looking up the user's domain in the database.
+    Identity Provider
 
 
-- **Generic OIDC**:
+- **Dynamic Flow**:
+
+    Refers to login flow where the idP is inferred from the username/email submitted on login form. The package retrieves the appropriate OIDC configuration by looking up the user's domain in the database.
+
+
+- **Static FLOW**:
 
     Refers to non-domain-specific login options typically shown as "Login with {Provider}" (e.g., "Login with JumpCloud"). These are explicitly selected by the user and not determined based on their email domain.
 
 ## Features:
 
 Django Admin:
-- **Federated Admin OIDC login**:
+- **Dynamic Admin OIDC login**:
 
     Django Admin login form accepts username (email), and is automatically redirected to Identity Provider login page if their email domain is found in the 
-Federated Provider table. If not found in the table, the user is asked to submit a password (default login)
+Dynamic Provider table. If not found in the table, the user is asked to submit a password (default login)
 
 
-- **Generic Admin OIDC login**:
+- **Static Admin OIDC login**:
 
-    Any generic Identity Provider Login option can be added to the django login page (e.g. "Login with Google").  Generic provider configs are stored in the
-Generic Provider table.
+    Any static Identity Provider Login option can be added to the django login page (e.g. "Login with JumpCloud").  Static provider configs are stored in the
+Static Provider table.
 
 APIs:
-- **Federated OIDC login endpoint**:
+- **Dynamic OIDC login endpoint**:
 
-    The package includes a login endpoint that can be used by any frontend agent to login based on a federate username (email) 
+    The package includes a login endpoint that can be used by any frontend agent to login based on a federated username (email) 
 
 
-- **Generic OIDC login endpoint**:
+- **Static OIDC login endpoint**:
 
-    This endpoint can be used to retrieve any provider auth URL.  Generic provider configs are stored on the
-Generic Provider table. By using this endpoint, any generic Identity Provider Login option can be added to the frontend 
+    This endpoint can be used to retrieve any provider auth URL.  Static provider configs are stored on the
+Static Provider table. By using this endpoint, any Identity Provider Login option can be added to the frontend 
 login page (e.g. "Login with Google") without having to store any provider configurations on the individual frontends. 
 
 # Installation
@@ -77,11 +85,11 @@ To install, run:
 # Fedauth OIDC flows diagrams: 
 diagrams done with [draw.io](https://www.drawio.com/)
 
-## A) Django Admin OIDC (Federated or Generic OIDC)
+## A) Django Admin OIDC (Dynamic or Stativ OIDC)
 
 ![OIDC login flow](docs/diagrams/admin_oidc_flow.png)
 
-## A) Frontend API OIDC (Federated or Generic OIDC)
+## A) Frontend API OIDC (Dynamic or Static OIDC)
 
 ![OIDC login flow](docs/diagrams/frontend_flow.png)
 
@@ -114,8 +122,8 @@ debugging if not set up correctly.
 ### Here are a few recommended providers with setup instructions:
 
 > Note: For easiest setup I recommend: 
->- 'KeyCloak' for federated user login
->- 'Google' for non generic user login ('Login with google')
+>- 'KeyCloak' for federated user login (Dynamic and/or Static)
+>- 'Google' for non-federated user frontend login ('Login with google')
 
 **KeyCloak** (*Easiest to set up*): [KeyCloak setup](docs/keycloak_setup.md)
 - Runs locally using docker (required).
@@ -127,8 +135,9 @@ Okta setup](docs/okta_setup.md)
 - Offers federated user functionality, and groups scope setup
 
 **Google** (*Relatively simple setup*): [Google setup](docs/google_setup.md)
-- Use this for generic sign in setup ('Sign in with google') - N
-- Offers federated user functionality, and groups scope setup
+- **DOES NOT** offer federation capabilities (Can't assign group scopes)
+- **ONLY** use for frontend API testing (Static login options on frontend)
+- Use this for static sign in setup ('Sign in with google')
 
 > ## Note: Handling idP sessions
 > 
@@ -145,16 +154,26 @@ Okta setup](docs/okta_setup.md)
 
 # Admin OIDC setup
 
-- Federated login
+- Dynamic login
   - When using this package, the admin login form will only ask for a username (email)
   - When the username is submitted, the backend will check the email domain, and redirect the user to the auth provider if the 
-domain is found in the FederatedProvider table.
+domain is found in the DynamicProvider table.
   - If domain is not found, the admin will show a login from including a password field to handle default login.
-  - see this doc for instructions: [Federated admin login](docs/federated_admin.md)
+  - see this doc for instructions: [Dynamic admin login](docs/dynamic_admin)
 
-- Generic login
-  - You also have the option of adding a e.g. 'Login with Google' option
-  - see this doc for instructions: [Generic admin login](docs/generic_admin.md)
+- Static login
+  - You also have the option of adding a e.g. 'Login with ...' option
+  - see this doc for instructions: [Static admin login](docs/static_admin)
+
+## Admin Demo:
+
+> Note: I am using KeyCloak idP service for both dynamic and static login here, but any Auth provider that allows for federated users, can be used.
+
+### Dynamic admin login (idP inferred from username domain)
+![Dynamic Admin](docs/media/dynamic_admin_login.gif)
+
+### Static admin login ('Login with ...' selected) 
+![static admin](docs/media/static_admin_login.gif)
 
 
 # Frontend OIDC API setup
@@ -164,8 +183,16 @@ domain is found in the FederatedProvider table.
   - `/login/token-exchange/` - to exchange the short-live code for a valid JWT token
 
 - See this doc for usage: [Fronted OIDC API](docs/api_strucure.md)
+
+## Frontend API Demo:
+
+### Dynamic API login (idP inferred from username domain)
+![Dynamic frontend](docs/media/dynamic_frontend_login.gif)
+
+### Static admin login ('Login with ...' selected) - Note, I am already logged into my google account here, so I don't have to authenticate
+![static frontend](docs/media/static_frontend_login.gif)
  
-# Configuration
+# `settings.py` example
 
  - This package requires some configurations on your `settings.py` file
  - See example: [example settings](docs/settings_example.md)
@@ -180,15 +207,15 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # register fedauth auth urls (authentication, callback and logout url)
     path('oidc/', include('fedauth.urls')),
-    # include any generic oidc providers if using any
-    path('google/authenticate/', GoogleAuthRequestView.as_view(), name="google_authentication_init",),
+    # include any static oidc providers if using any
+    path('jumpcloud/authenticate/', JumpCloudAuthRequestView.as_view(), name="jumpcloud_authentication_init",),
     path('', include(api_urls)),
 ]
 ```
 
 ## Customizing Admin login template:
 - This package has a default login template called `admin/oidc_login.html`
-- To customize this template (if specific styling is required, or to add non-federated login links), a custom login template can be created that either 
+- To customize this template (if specific styling is required, or to add static provider login links), a custom login template can be created that either 
 extends the custom template or completely overrides it.
 - If a custom template is created, add the following setting to settings file: `LOGIN_TEMPLATE = '<template>'`
 - NOTE: **username** should be the ONLY form field on template.

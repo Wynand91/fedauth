@@ -2,10 +2,10 @@ from mozilla_django_oidc.views import (
     OIDCAuthenticationRequestView
 )
 
-from fedauth.base import GenViewBase
+from fedauth.base import StaticViewBase
 
 
-class GenericAuthenticationRequestView(GenViewBase, OIDCAuthenticationRequestView):
+class StaticAuthenticationRequestView(StaticViewBase, OIDCAuthenticationRequestView):
     """
     This is the base view for generic oidc views (e.g. "login with fb").
     To add new generic oidc, create a new view that inherits from this one and override the alias to match the idp name

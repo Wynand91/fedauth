@@ -1,23 +1,23 @@
 from django.contrib import admin
 
 from fedauth.forms import BaseProviderAdminForm
-from fedauth.models import FederatedProvider, GenericProvider
+from fedauth.models import DynamicProvider, StaticProvider
 
 
-class FederatedProviderForm(BaseProviderAdminForm):
+class DynamicProviderForm(BaseProviderAdminForm):
 
     class Meta:
-        model = FederatedProvider
+        model = DynamicProvider
         exclude = ('client_secret_cipher',)
 
 
-@admin.register(FederatedProvider)
-class FederatedProviderAdmin(admin.ModelAdmin):
+@admin.register(DynamicProvider)
+class DynamicProviderAdmin(admin.ModelAdmin):
     list_display = ['created_at', 'domain']
     list_filter = ['created_at', 'domain']
     search_fields = ['domain']
     ordering = ['domain']
-    form = FederatedProviderForm
+    form = DynamicProviderForm
     readonly_fields = ('created_at', 'updated_at',)
     fields = (
         'created_at',
@@ -40,20 +40,20 @@ class FederatedProviderAdmin(admin.ModelAdmin):
         return super().get_fields(request, obj)
 
 
-class GenericProviderForm(BaseProviderAdminForm):
+class StaticProviderForm(BaseProviderAdminForm):
 
     class Meta:
-        model = GenericProvider
+        model = StaticProvider
         exclude = ('client_secret_cipher',)
 
 
-@admin.register(GenericProvider)
-class GenericProviderAdmin(admin.ModelAdmin):
+@admin.register(StaticProvider)
+class StaticProviderAdmin(admin.ModelAdmin):
     list_display = ['created_at', 'provider']
     list_filter = ['created_at', 'provider']
     search_fields = ['provider']
     ordering = ['provider']
-    form = GenericProviderForm
+    form = StaticProviderForm
     readonly_fields = ('created_at', 'updated_at',)
     fields = (
         'created_at',

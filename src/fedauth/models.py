@@ -34,15 +34,15 @@ class BaseProvider(TimeStampedModel):
     client_secret = property(get_client_secret, set_client_secret)  # noqa
 
 
-class FederatedProvider(BaseProvider):
+class DynamicProvider(BaseProvider):
     """
-    This model stores all the federated domain provider settings (e.g. 'company.com')
+    This model stores all the dynamic domain provider settings (e.g. 'company.com')
     """
     domain = models.CharField(max_length=48, unique=True)
 
 
-class GenericProvider(BaseProvider):
+class StaticProvider(BaseProvider):
     """
-    This model stores all the generic provider settings (for non-federated login - e.g. login with facebook etc)
+    This model stores all the static provider settings (for e.g. login with jumpcloud options)
     """
     provider = models.CharField(max_length=48, unique=True)

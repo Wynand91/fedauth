@@ -2,10 +2,10 @@ from mozilla_django_oidc.views import (
     OIDCAuthenticationRequestView
 )
 
-from fedauth.base import FedViewBase
+from fedauth.base import DynamicViewBase
 
 
-class FederatedAuthenticationRequestView(FedViewBase, OIDCAuthenticationRequestView):
+class DynamicAuthenticationRequestView(DynamicViewBase, OIDCAuthenticationRequestView):
     """
     OIDCAuthenticationRequestView with alternate 'get_settings' functionality.
     """

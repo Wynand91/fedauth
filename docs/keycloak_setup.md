@@ -5,6 +5,7 @@
 >- [Docker Desktop for Windows](https://docs.docker.com/desktop/setup/install/windows-install/)
 >- [Docker Engine only (CLI-only, no GUI) - Linux](https://docs.docker.com/engine/install/)
 
+> Note: KeyCloak can also be used for both Dynamic (domain based) and Static integration (click 'Login with ..') for testing purposes.
 
 ## Step 1: Run KeyCloak container
 
@@ -46,7 +47,7 @@
  > 
  > **Extra debugging tip**: It seems that keycloak might be caching tokens, so if you make changes to token scope, then it will probably not reflect instantly.
 > 
- > **Also** make sure to include the scope on your federated model config in the scopes field!
+ > **Also** make sure to include the scope on your model config in the scopes field!
 > 
 > To those about to configure idP token scopes - I salute you. 🫡
 
@@ -57,7 +58,7 @@
  - change password
 
 ## Step 6: Test with OIDC
-In your running Django app admin, go to Federated Provider model view and add a Provider with:
+In your running Django app admin, go to Dynamic/Static Provider model view and add a Provider with:
 - domain: this is the email domain you will use for users (e.g. myapp.com)
 - client id: this is the client ID of your app in KeyCloak dashboard (usually your app client name or whatever id you chose when creating the client)  - On keycloak dashboard, select ‘Clients’,  then ‘settings’ tab to find your client ID
 - secret key: On KeyCloak dashboard, select ‘Clients’,  then ‘credentials’ tab to find your secret key.
