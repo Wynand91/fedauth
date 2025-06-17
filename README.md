@@ -183,6 +183,11 @@ domain is found in the DynamicProvider table.
 ### Static admin login ('Login with ...' selected) 
 ![static admin](docs/media/static_admin_login.gif)
 
+### Standard admin login (if email is not federated) 
+> If email is not federated, user will be prompted to submit password.
+>
+![standard admin](docs/media/standard_login.gif)
+
 
 # Frontend OIDC API setup
 
